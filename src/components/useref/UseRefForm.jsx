@@ -1,15 +1,19 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 const UseRefForm = () => {
+  const [formData, setFormData] = useState([]);
   const titleREf = useRef(null);
   const nameRef = useRef(null);
   const handleSubmit = (e) => {
-    console.log(e.target);
     e.preventDefault();
-    const title = titleREf.current.value;
-    const fname = nameRef.current.value;
+    let title = titleREf.current.value;
+    let fname = nameRef.current.value;
     console.log("title :", title);
     console.log("name :", fname);
+    setFormData([...formData, { title, fname }]);
+
+    title = "";
+    fname = "";
   };
   return (
     <div>
@@ -22,6 +26,22 @@ const UseRefForm = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {formData.map((data, index) => (
+            <tr key={index}>
+              <td>{data.title}</td>
+              <td>{data.fname}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

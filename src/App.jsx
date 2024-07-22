@@ -15,7 +15,7 @@ function App() {
           <ExpenseForm setExpenses={setExpenses} />
           <ExpenseTable expenses={expenses} />
         </div>
-        {/* <UseRefForm /> */}
+        <UseRefForm />
       </main>
     </>
   );
