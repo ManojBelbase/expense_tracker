@@ -1,7 +1,7 @@
 import React from "react";
 
-const ExpenseTable = ({ expense }) => {
-  console.log(expense);
+const ExpenseTable = ({ expenses }) => {
+  console.log(expenses);
   return (
     <div>
       <table className="expense-table">
@@ -44,7 +44,7 @@ const ExpenseTable = ({ expense }) => {
           </tr>
         </thead>
         <tbody>
-          {expense.map(({ id, title, category, amount }) => {
+          {expenses.map(({ id, title, category, amount }) => {
             return (
               <tr key={id}>
                 <td>{title}</td>
@@ -56,7 +56,7 @@ const ExpenseTable = ({ expense }) => {
           <tr>
             <th>Total</th>
             <th />
-            <th>₹8100</th>
+            <th>₹1200</th>
           </tr>
         </tbody>
       </table>

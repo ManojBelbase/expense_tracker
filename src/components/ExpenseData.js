@@ -5,12 +5,7 @@ export default [
     category: "Grocery",
     amount: 20,
   },
-  {
-    id: crypto.randomUUID(),
-    title: "Milk",
-    category: "Grocery",
-    amount: 400,
-  },
+
   {
     id: crypto.randomUUID(),
     title: "Shirt",
