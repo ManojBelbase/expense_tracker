@@ -1,16 +1,25 @@
+import { useState } from "react";
+import Contextmenu from "./Contextmenu";
 import { useFilter } from "./hooks/useFilter";
 
-const ExpenseTable = ({ expenses }) => {
+const ExpenseTable = ({ expenses, setExpenses }) => {
   const [filteredData, setQuery] = useFilter(expenses, (data) => data.category);
+  const [menuPosition, setMenuPosition] = useState({});
+  const [rowId, setRowId] = useState("");
   // cdalculating total amount
   const totalAmount = filteredData.reduce(
     (accu, curr) => accu + curr.amount,
     0
   );
-  console.log(totalAmount);
   return (
-    <div>
-      <table className="expense-table">
+    <>
+      <Contextmenu
+        menuposition={menuPosition}
+        setMenuPosition={setMenuPosition}
+        setExpenses={setExpenses}
+        rowId={rowId}
+      />
+      <table className="expense-table" onClick={() => setMenuPosition({})}>
         <thead>
           <tr>
             <th>Title</th>
@@ -52,7 +61,14 @@ const ExpenseTable = ({ expenses }) => {
         <tbody>
           {filteredData.map(({ id, title, category, amount }) => {
             return (
-              <tr key={id}>
+              <tr
+                key={id}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  setMenuPosition({ left: e.clientX + 4, top: e.clientY + 4 });
+                  setRowId(id);
+                }}
+              >
                 <td>{title}</td>
                 <td>{category}</td>
                 <td>Rs.{amount}</td>
@@ -66,7 +82,7 @@ const ExpenseTable = ({ expenses }) => {
           </tr>
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 
