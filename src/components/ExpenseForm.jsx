@@ -35,12 +35,13 @@ const ExpenseForm = ({ setExpenses }) => {
 
   const validate = (formData) => {
     const errorsData = {};
-    console.log(Object.entries(formData));
+
     Object.entries(formData).forEach(([key, value]) => {
-      console.log(key, value);
       validationConfig[key].some((rule) => {
+        console.log(rule);
         if (rule.required && !value) {
           errorsData[key] = rule.message;
+          console.log((errorsData[key] = rule.message));
           return true;
         }
         if (rule.minLength && value.length < rule.minLength) {
