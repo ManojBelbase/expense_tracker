@@ -23,7 +23,10 @@ const ExpenseForm = ({
       },
     ],
     category: [{ required: true, message: "Please Select Category" }],
-    amount: [{ required: true, message: "Please Enter Amount" }],
+    amount: [
+      { required: true, message: "Please Enter Amount" },
+      { pattern: /^-?\d*\.?\d*$/, message: "Please Enter number only" },
+    ],
   };
 
   const validate = (formData) => {
@@ -39,6 +42,9 @@ const ExpenseForm = ({
           if (rule.minLength && value.length < rule.minLength) {
             errorsData[key] = rule.message;
             return true;
+          }
+          if (rule.pattern && !rule.pattern.test(value)) {
+            errorsData[key] = rule.message;
           }
           return false;
         });
