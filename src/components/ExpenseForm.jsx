@@ -2,13 +2,13 @@ import { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 
-const ExpenseForm = ({ setExpenses }) => {
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "",
-    amount: "",
-    email: "",
-  });
+const ExpenseForm = ({
+  setExpenses,
+  expense,
+  setExpense,
+  editingRowId,
+  seteditingRowId,
+}) => {
   const [errors, setErrors] = useState({});
 
   const validationConfig = {
@@ -24,36 +24,25 @@ const ExpenseForm = ({ setExpenses }) => {
     ],
     category: [{ required: true, message: "Please Select Category" }],
     amount: [{ required: true, message: "Please Enter Amount" }],
-    email: [
-      { required: true, message: "Please Enter Email" },
-      {
-        pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        message: "Please Enter a Valid Email",
-      },
-    ],
   };
 
   const validate = (formData) => {
     const errorsData = {};
 
     Object.entries(formData).forEach(([key, value]) => {
-      validationConfig[key].some((rule) => {
-        console.log(rule);
-        if (rule.required && !value) {
-          errorsData[key] = rule.message;
-          console.log((errorsData[key] = rule.message));
-          return true;
-        }
-        if (rule.minLength && value.length < rule.minLength) {
-          errorsData[key] = rule.message;
-          return true;
-        }
-        if (rule.pattern && !rule.pattern.test(value)) {
-          errorsData[key] = rule.message;
-          return true;
-        }
-        return false;
-      });
+      if (validationConfig[key]) {
+        validationConfig[key].some((rule) => {
+          if (rule.required && !value) {
+            errorsData[key] = rule.message;
+            return true;
+          }
+          if (rule.minLength && value.length < rule.minLength) {
+            errorsData[key] = rule.message;
+            return true;
+          }
+          return false;
+        });
+      }
     });
 
     setErrors(errorsData);
@@ -63,14 +52,35 @@ const ExpenseForm = ({ setExpenses }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationResult = validate(expense);
-
     if (Object.keys(validationResult).length) return;
+
+    // update logic
+    if (editingRowId) {
+      setExpenses((prevState) =>
+        prevState.map((prevElem) => {
+          if (prevElem.id === editingRowId) {
+            return { ...expense, id: editingRowId };
+          } else {
+            return prevElem;
+          }
+        })
+      );
+
+      setExpense({
+        title: "",
+        category: "",
+        amount: "",
+      });
+      seteditingRowId("");
+      return;
+    }
+
+    // Add logic
     setExpenses((prev) => [...prev, { ...expense, id: crypto.randomUUID() }]);
     setExpense({
       title: "",
       category: "",
       amount: "",
-      email: "",
     });
   };
 
@@ -111,15 +121,8 @@ const ExpenseForm = ({ setExpenses }) => {
         onChange={handleChange}
         error={errors.amount}
       />
-      <Input
-        label="Email"
-        id="email"
-        name="email"
-        value={expense.email}
-        onChange={handleChange}
-        error={errors.email}
-      />
-      <button className="add-btn">Add</button>
+
+      <button className="add-btn">{editingRowId ? "Save" : "Add"}</button>
     </form>
   );
 };

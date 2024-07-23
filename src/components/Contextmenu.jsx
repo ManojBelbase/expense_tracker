@@ -1,13 +1,25 @@
 import React from "react";
 
-const Contextmenu = ({ menuposition, setMenuPosition, setExpenses, rowId }) => {
+const Contextmenu = ({
+  menuposition,
+  setMenuPosition,
+  setExpenses,
+  rowId,
+  expenses,
+  setExpense,
+  seteditingRowId,
+}) => {
   if (!menuposition.left) return;
   return (
     <div>
       <div className="context-menu" style={menuposition}>
         <div
           onClick={() => {
-            console.log("Editint");
+            const { title, category, amount } = expenses.find(
+              (exp) => exp.id === rowId
+            );
+            seteditingRowId(rowId);
+            setExpense({ title, category, amount });
             setMenuPosition({});
           }}
         >
