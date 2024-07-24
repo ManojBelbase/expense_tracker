@@ -58,6 +58,7 @@ const ExpenseForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationResult = validate(expense);
+    //If the length is greater than zero (i.e., there are validation errors), the function exits early and does not proceed further. 
     if (Object.keys(validationResult).length) return;
 
     // update logic
