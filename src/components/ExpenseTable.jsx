@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Contextmenu from "./Contextmenu";
 import { useFilter } from "./hooks/useFilter";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 const ExpenseTable = ({
   expenses,
@@ -9,14 +10,14 @@ const ExpenseTable = ({
   seteditingRowId,
 }) => {
   const [filteredData, setQuery] = useFilter(expenses, (data) => data.category);
-  const [menuPosition, setMenuPosition] = useState({});
+  const [menuPosition, setMenuPosition] = useLocalStorage("menuPosition", {});
   const [rowId, setRowId] = useState("");
   // cdalculating total amount
   const totalAmount = filteredData.reduce(
     (accu, curr) => accu + parseInt(curr.amount),
     0
   );
-  console.log("render");
+
   return (
     <>
       <Contextmenu
@@ -129,6 +130,7 @@ const ExpenseTable = ({
                   e.preventDefault();
                   setMenuPosition({ left: e.clientX + 4, top: e.clientY + 4 });
                   setRowId(id);
+                  4;
                 }}
               >
                 <td>{title}</td>
