@@ -40,7 +40,7 @@ const ExpenseTable = ({
         <thead>
           <tr>
             <th>
-              <div>
+              <div className="title-container">
                 <span>Title</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,10 @@ const ExpenseTable = ({
               </div>
             </th>
             <th>
-              <select onChange={(e) => setQuery(e.target.value.toLowerCase())}>
+              <select
+                onChange={(e) => setQuery(e.target.value.toLowerCase())}
+                className="cate"
+              >
                 <option value="">All</option>
                 <option value="grocery">Grocery</option>
                 <option value="clothes">Clothes</option>
